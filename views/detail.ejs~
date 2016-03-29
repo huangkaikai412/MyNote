@@ -75,7 +75,8 @@
 			</li>
 		</ul>
 	</div>
-	<ul class="pagination pagination-large pagination-centered">
+	<center>
+	<ul class="pagination">
 		<% if (page == 1) {%>
   		<li class="disabled"><a href=#>首页</a></li>
   		<li class="disabled"><a href=#>前一页</a></li>
@@ -94,5 +95,6 @@
   		<li><a href="?p=<%= total %>">尾页</a></li>
   		<% } %>
 	</ul>
+	</center>
 </section>
 <%- include footer %>

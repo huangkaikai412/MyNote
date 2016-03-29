@@ -11,7 +11,7 @@ var models = require('./models/models');
 var Note = models.Note;
 var User = models.User;
 mongoose.connect('mongodb://localhost:27017/notes');
-mongoose.connection.on('error',console.error.bind(console,'连接数据库失败'));
+mongoose.connection.on('error',console.error.bind(console,'fail to connect mongo'));
 
 //创建express实例
 var app = express();
@@ -62,17 +62,17 @@ app.post('/login',function(req,res) {
 			return res.redirect('/login_register');
 		}
 		if (!user) {
-			console.log('用户名不存在！');
+			console.log('There is no such user！');
 			return res.redirect('/login_register?errcode=11');
 		}
 		//对密码进行加密
 		var md5 = crypto.createHash('md5'),
 		      md5password = md5.update(password).digest('hex');
 		if (user.password !== md5password) {
-			console.log('密码错误！');
+			console.log('Wrong password！');
 			return res.redirect('/login_register?errcode=12');
 		}
-		console.log('登录成功！');
+		console.log('Login sucessfully！');
 		user.password = null;
 		delete user.password;
 		req.session.user = user;
@@ -107,7 +107,7 @@ app.post('/register',function(req,res) {
 		}
 		
 		if (user) {
-			console.log('用户名已存在！');
+			console.log('User alredy exists！');
 			return res.redirect('/login_register?errcode=21');
 		}
 		
@@ -126,7 +126,7 @@ app.post('/register',function(req,res) {
 				console.log(err);
 				return res.redirect('/login_register');
 			}
-			console.log('注册成功！');
+			console.log('Register sucessfully！');
 			return res.redirect('/detail');
 		});
 	});
@@ -164,7 +164,7 @@ app.post('/post',function(req,res) {
 			console.log(err);
 			return res.redirect('/post');
 		}
-		console.log('文章发表成功！');
+		console.log('Post sucessfully！');
 		return res.redirect('/detail');
 	});
 });

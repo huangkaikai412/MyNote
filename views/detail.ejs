@@ -1,0 +1,100 @@
+<%- include header %>
+<section class="header">
+	<div class="container">
+		<div class="row">
+			<h3 class="white">MAKING NOTE</h3>
+<!--			<button class="btn quit" type="button" onclick="location.href='/quit'">退出</button>-->
+		</div>
+	</div>
+</section>
+<section class="notelist">
+	<div class="container">
+		<div class="col-md-12 row">
+            <h1 class="inner-title title-left">我的笔记列表</h1>
+            <div class="dropdown">
+  				<input type="text" class="input-medium search-input" placeholder="搜索笔记">
+  				<a  class="search-icon" href=#>
+  					<img src="/img/search.png" width="22px" height="22px">
+  				</a>
+  				<a class="dropdown-toggle" id="notelist-dropdown" role="button" data-toggle="dropdown" data-target="#">
+    				<span></span>
+ 				</a>
+  				<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+    				<li role="presentation"><a href="/post">添加</a></li>
+    				<li role="presentation"><a>编辑</a></li>
+    				<li role="presentation" class=" divider"></li>
+    				<li role="presentation"><a href="/quit">退出</a></li>
+  				</ul>
+			</div>
+        </div>
+		<ul class="list-control">
+			<li>
+				<% list.forEach(function (note,index) { %>
+				<div class="col-md-4 text-center note-item">
+					<div>
+						<h3><%= note.title %></h3>
+						<p>
+							<span class="tag"></span><tag><%= note.tag %></tag> 
+							<time><%= note.createTime.Format("yyyy/MM/dd hh:mm:ss") %></time>
+						</p>
+					</div>
+					<div class="overlay">
+						<button class="btn large" data-toggle="modal" data-target="#<%= note._id%>">查看</button>&nbsp;&nbsp;
+						<a class="btn btn-danger large" href="?t=<%= note.title %>">删除</a>
+					</div>
+				</div>
+				<div id="<%= note._id %>" class="modal fade note-hide">
+					<div class="modal-dialog">
+					<div class="modal-content">
+  					<div class="modal-header">
+  						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    					<h3><%= note.title %></h3>
+  					</div>
+  					<div class="modal-body">
+   						<p><%= note.content %></p>
+  					</div>
+  					<div class="modal-footer">
+    					<a class="btn" data-dismiss="modal" aria-hidden="true">关闭</a>
+    					<a href="#" class="btn btn-primary">编辑</a>
+  					</div>
+  					</div>
+  					</div>
+  				</div>
+				<% }) %>
+				<% if (list.length == 0) {%>
+				<div class="col-md-12 no-note">
+					<h4>&nbsp;&nbsp;您还没有任何笔记，现在开始<a href="/post">创建</a>吧!</h4>
+				</div>
+				<%} else if (page == total) {%>
+				<div class="col-md-4 add text-center">
+					<a href="/post">
+						<img src="img/add.png" width="120px" height="120px"></img>
+					</a>
+				</div>
+				<% } %>
+			</li>
+		</ul>
+	</div>
+	<center>
+	<ul class="pagination">
+		<% if (page == 1) {%>
+  		<li class="disabled"><a href=#>首页</a></li>
+  		<li class="disabled"><a href=#>前一页</a></li>
+  		<% }else { %>
+  		<li><a href="?p=1">首页</a></li>
+  		<li><a href="?p=<%= page-1 %>">前一页</a></li>
+  		<% } for (var i=1;i<=total;i++) { if (i == page) {%>
+  		<li class="active"><a href=#><%= i %></a></li>
+  		<% }else {  %>
+  		<li ><a href="?p=<%= i %>"><%= i %></a></li>
+  		<%} } if (page == total) {%>
+  		<li class="disabled"><a href=#>后一页</a></li>
+  		<li class="disabled"><a href=#>尾页</a></li>
+  		<% }else { %>
+  		<li><a href="?p=<%= page+1 %>">后一页</a></li>
+  		<li><a href="?p=<%= total %>">尾页</a></li>
+  		<% } %>
+	</ul>
+	</center>
+</section>
+<%- include footer %>

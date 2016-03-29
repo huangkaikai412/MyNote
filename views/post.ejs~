@@ -1,0 +1,43 @@
+<%- include header %>
+<section class="header">
+	<div class="container">
+		<div class="row">
+			<h3 class="white">MAKING NOTE</h3>
+			<button class="btn quit" type="button" onclick="location.href='/detail'">返回笔记列表</button>
+		</div>
+	</div>
+</section>
+<section class="essay">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 text-center">
+            	<h1 class="inner-title">撰写新笔记</h1>
+            </div>
+            <div class="col-md-6 col-md-offset-3">
+            	<form method="post" action="post">
+				<div class="row">
+					<div class="field">
+						<input type="text" id="title" name="title"  placeholder="标题">
+					</div>
+				</div>
+				<div class="row">
+					<div class="field">
+						<input name="label" type="text" id="label" placeholder="标签">
+					</div>
+				</div>
+				<div class="row">
+					<div class="field">
+						<textarea name="note" id="note" placeholder="笔记内容" rows="6"></textarea>
+					</div>
+				</div>
+				<div class="text-center sub">
+					<button type="submit" id="post" class="btn btn-large btn-primary btn-block large">
+						发表
+					</button>
+				</div>
+				</form>
+            </div>
+		</div>
+	</div>
+</section>
+<%- include footer %>

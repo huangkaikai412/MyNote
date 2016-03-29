@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>首页</title>
+		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/common.css">
+	</head>
+	<body>
+<section class="home">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 text-center inner">
+			<h1 class="white">MAKING NOTE</h1>
+			<h2 class="white">YOUR LIFE & MY FEELING</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 text-center login-register">
+				<a href=# class="login-register-btn">Login/Register</a>
+			</div>
+		</div>
+	</div>
+</section>
+<footer class="footer">
+	<div class="container">
+		<div class="row">
+			<p class="copy">© 2015 · HUANG KAIKAI · ALL RIGHTS RESERVED</p>
+		</div>
+	</div>
+</footer>
+		<script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	</body>
+</html>

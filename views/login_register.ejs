@@ -1,0 +1,183 @@
+<%- include header %>
+<!--title start-->
+<section class="header">
+	<div class="container">
+		<h3 class="white">MAKING NOTE</h3>
+		<ul class="nav nav-pills switch">
+  			<li class="active" id="log">
+    			<a href="javascript:void(0);" onclick="login()">登录</a>
+  			</li>
+  			<li id="reg">
+  				<a href="javascript:void(0);" onclick="register()">注册</a>
+  			</li>
+		</ul>
+	</div>
+</section>
+<!--title end-->
+<!--feature start-->
+<section class="feature">
+	<div class="container">
+		<div class="row">
+			<div class="icon text-center">
+				<img src="/img/icon.png"></img>
+			</div>
+			<div class="col-md-12 text-center">
+				<h3>马上开始你的笔记！</h3>
+			</div>
+			<div class="col-md-6 col-md-offset-3 text-center">
+				<p>随时随地，精彩记录</p>
+			</div>
+		</div>
+	</div>
+</section>
+<!--feature end-->
+<div class="showbox">
+<!--login form start-->
+<section class="info" id="login_info">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 text-center">
+            	<h1 class="inner-title">登录</h1>
+            </div>
+            <div class="col-md-6 col-md-offset-3 alert alert-danger fade in err">
+  				<p id="error_1">用户名或密码错误！</p>
+			</div>
+			<% if (locals.error) {%>
+			<div class="col-md-6 col-md-offset-3 alert alert-danger fade in" height="auto">
+  				<p><%= error %></p>
+			</div>
+			<% } %>
+            <div class="col-md-6 col-md-offset-3">
+            	<form method="post" action="login" onSubmit="return check();">
+				<div class="row">
+					<div class="field">
+						<input type="text" id="login_name" name="login_name"  placeholder="用户名" onblur="isUsername(this.value)">
+					</div>
+				</div>
+				<div class="row">
+					<div class="field">
+						<input name="login_password" type="password" id="login_password" placeholder="密码" onblur="isPwd(this.value)">
+					</div>
+				</div>
+				<div class="text-center sub">
+					<a href="javascript:void(0);" onclick="register()">没有账号？立即注册</a>
+					<button type="submit" id="login" class="btn btn-large btn-primary">
+						 登录 
+					</button>
+				</div>
+				</form>
+            </div>
+		</div>
+	</div>
+</section>
+<!--login form end-->
+<!--register form start-->
+<section class="info" id="register_info">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 text-center">
+            	<h1 class="inner-title">注册</h1>
+            </div>
+            <div class="col-md-6 col-md-offset-3 alert alert-danger fade in err">
+  				<p id="error_2">请填写完整信息！</p>
+			</div>
+			<% if (locals.error) {%>
+			<div class="col-md-6 col-md-offset-3 alert alert-danger fade in" height="auto">
+  				<p><%= error %></p>
+			</div>
+			<% } %>
+            <div class="col-md-6 col-md-offset-3">
+            	<form method="post" action="/register" onSubmit="return check();">
+				<div class="row">
+					<div class="field">
+						<input type="text" id="register_name" name="register_name"  placeholder="用户名" onblur="isUsername(this.value)">
+					</div>
+				</div>
+				<div class="row">
+					<div class="field">
+						<input name="register_password" type="password" id="register_password" placeholder="密码" onblur="isPwd(this.value)">
+					</div>
+				</div>
+				<div class="text-center sub">
+					<a href="javascript:void(0);" onclick="login()">已有账号？马上登录</a>
+					<button type="submit" id="register" class="btn btn-large btn-primary">
+						 注册 
+					</button>
+				</div>
+				</form>
+            </div>
+		</div>
+	</div>
+</section>
+<!--register form end-->
+</div>
+
+<script type="text/javascript">
+	//获取URL参数
+	function getUrlParam(name) {
+    	var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    	var r = window.location.search.substr(1).match(reg); //匹配目标参数
+    	if (r!=null) return unescape(r[2]); return null; //返回参数值
+	}
+
+	$(document).ready(function() {
+		var err = getUrlParam("errcode");
+		switch (err) {
+		 case "11":login();show_err("用户名不存在！");break;
+		 case "12":login();show_err("密码错误！");break;
+		 case "21":register();show_err("用户名已存在！");break;
+		 default:break;
+		}
+	});
+
+	//切换到登录界面
+	function login(){
+		$(".err").hide();
+		$('#login_info').animate({top:'0'});
+		$('#register_info').animate({top:'0'});
+		$('#log').addClass('active');
+		$('#reg').removeClass('active');
+	}
+	
+	//切换到注册界面
+	function register(){
+		$(".err").hide();
+		$('#login_info').animate({top:'-462px'});
+		$('#register_info').animate({top:'-462px'});
+		$('#log').removeClass('active');
+		$('#reg').addClass('active');
+	}
+	
+	//检查是否能够提交表单
+	function check() {
+		if ($(".err").is(":visible")) return false;
+		else return true;
+	}
+	
+	//显示错误信息		
+	function show_err(info){
+		$(".err").show();
+		document.getElementById("error_1").innerHTML=info;
+		document.getElementById("error_2").innerHTML=info;
+	}
+	
+	//验证用户名		
+	function isUsername(str){		
+		if (str == "") show_err("用户名不能为空");
+		else if (str.length>=3 && str.length<=20 && str.match(/^[a-zA-Z0-9_]{1,}$/)){
+			$(".err").hide();
+		}
+		else show_err("用户名只能是字母、数字、下划线的组合，长度3~20字符！");
+	}
+	
+	//验证密码		
+	function isPwd(str){		
+		if (str == "") show_err("密码不能为空");
+		else if (str.length>=6 && /[0-9]+/.test(str) && /[a-z]+/.test(str) && /[A-Z]+/.test(str)) {
+			$(".err").hide();
+		}
+		else show_err("密码要求在6~20个字符之间,必须同时包含数字、小写字母、大写字母");
+	}
+</script>
+
+<%- include footer %>

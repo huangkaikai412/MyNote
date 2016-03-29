@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>登录/注册</title>
+		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/common.css">
+	</head>
+	<body>	
+<!--title start-->
+<section class="header">
+	<div class="container">
+		<ul class="nav nav-pills switch">
+  			<li class="active" id="log">
+    			<a href="javascript:void(0);" onclick="login()">登录</a>
+  			</li>
+  			<li id="reg">
+  				<a href="javascript:void(0);" onclick="register()">注册</a>
+  			</li>
+		</ul>
+	</div>
+</section>
+<!--title end-->
+<!--feature start-->
+<section class="feature">
+	<div class="container">
+		<div class="row">
+			<div class="icon text-center">
+				<img src="img/icon.png"></img>
+			</div>
+			<div class="col-md-12 text-center">
+				<h3>马上开始你的笔记！</h3>
+			</div>
+			<div class="col-md-6 col-md-offset-3 text-center">
+				<p>随时随地，精彩记录</p>
+			</div>
+		</div>
+	</div>
+</section>
+<!--feature end-->
+<div class="showbox">
+<!--login form start-->
+<section class="info" id="login_info">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 text-center">
+            	<h1 class="inner-title">登录</h1>
+            </div>
+            <div class="col-md-6 col-md-offset-3">
+            	<form>
+				<div class="row">
+					<div class="field">
+						<input type="text" id="login_name" name="login_name"  placeholder="用户名">
+					</div>
+				</div>
+				<div class="row">
+					<div class="field">
+						<input name="password" type="login_password" id="login_password" placeholder="密码">
+					</div>
+				</div>
+				<div class="text-center sub">
+					<a href="javascript:void(0);" onclick="register()">没有账号？立即注册</a>
+					<button type="submit" id="login" class="btn btn-large btn-primary">
+						 登录 
+					</button>
+				</div>
+				</form>
+            </div>
+		</div>
+	</div>
+</section>
+<!--login form end-->
+<!--register form start-->
+<section class="info" id="register_info">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 text-center">
+            	<h1 class="inner-title">注册</h1>
+            </div>
+            <div class="col-md-6 col-md-offset-3">
+            	<form>
+				<div class="row">
+					<div class="field">
+						<input type="text" id="register_name" name="register_name"  placeholder="用户名">
+					</div>
+				</div>
+				<div class="row">
+					<div class="field">
+						<input name="register_password" type="password" id="register_password" placeholder="密码">
+					</div>
+				</div>
+				<div class="text-center sub">
+					<a href="javascript:void(0);" onclick="login()">已有账号？马上登录</a>
+					<button type="submit" id="login" class="btn btn-large btn-primary">
+						 注册 
+					</button>
+				</div>
+				</form>
+            </div>
+		</div>
+	</div>
+</section>
+<!--register form end-->
+</div>
+
+<script>
+	function login(){
+		$('#login_info').animate({top:'0'});
+		$('#register_info').animate({top:'0'});
+		$('#log').addClass('active');
+		$('#reg').deleteClass('active');
+	}
+	
+	function register(){
+		$('#login_info').animate({top:'-462px'});
+		$('#register_info').animate({top:'-462px'});
+		$('#log').deleteClass('active');
+		$('#reg').addClass('active');
+	}
+</script>
+
+<footer class="footer">
+	<div class="container">
+		<div class="row">
+			<p class="copy">© 2015 · HUANG KAIKAI · ALL RIGHTS RESERVED</p>
+		</div>
+	</div>
+</footer>
+		<script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	</body>
+</html>

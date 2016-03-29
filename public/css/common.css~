@@ -323,7 +323,8 @@ form input, textarea {
     	opacity: 0;
 }
 
-.overlay button {
+.overlay button,
+.overlay a {
 	margin-top:100px;
 }
 

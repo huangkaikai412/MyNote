@@ -204,12 +204,14 @@ form input, textarea {
 	border-radius: 15px;
 		-webkit-border-radius: 15px;
    		-moz-border-radius: 15px;
+   	width:15%;
 }
 
 .search-input:focus {
 	border:2px solid #729fcf;
     outline: 0;
     outline: thin dotted \9;
+    width:15%;
 /*    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6);*/
 /*    -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6);*/
 /*    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6);*/

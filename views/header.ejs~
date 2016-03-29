@@ -7,3 +7,5 @@
 		<link rel="stylesheet" href="/css/common.css">
 	</head>
 	<body>
+		<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

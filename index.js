@@ -6,12 +6,88 @@ var crypto = require('crypto');
 var session = require('express-session');
 
 //引入模型并连接mongoose服务
-var mongoose = require('mongoose');
-var models = require('./models/models');
-var Note = models.Note;
-var User = models.User;
-mongoose.connect('mongodb://localhost:27017/notes');
-mongoose.connection.on('error',console.error.bind(console,'fail to connect mongo'));
+//var mongoose = require('mongoose');
+//var models = require('./models/models');
+//var Note = models.Note;
+//var User = models.User;
+//mongoose.connect('mongodb://localhost:27017/notes');
+//mongoose.connection.on('error',console.error.bind(console,'fail to connect mongo'));
+
+var Waterline = require('waterline');
+var mysqlAdapter = require('sails-mysql');
+var mongoAdapter = require('sails-mongo');
+
+// 适配器
+var adapters = {
+  	mongo: mongoAdapter,
+  	mysql: mysqlAdapter,
+  	default: 'mysql'
+};
+
+// 连接
+var connections = {
+  	mongo: {
+    		adapter: 'mongo',
+    		url: 'mongodb://localhost:27017/notes'
+  	},
+  	mysql: {
+    		adapter: 'mysql',
+    		url: 'mysql://mynote:123456@localhost:3306/mynote',
+  	}
+};
+
+//数据模型
+var User = Waterline.Collection.extend({
+	identity: 'user',
+  	connection: 'mysql',
+  	schema: true,
+  	migrate:'safe',
+  	attributes: {
+  		username:'String',
+		password:'String',
+		email:'String',
+		createTime:'date'
+  	},
+  	beforeCreate: function(v, cb){
+    		v.createTime = new Date();
+    	return cb();
+  	}
+})
+
+var Note = Waterline.Collection.extend({
+	identity: 'notes',
+  	connection: 'mysql',
+  	schema: true,
+  	migrate:'safe',
+  	attributes: {
+  		title:'String',
+		author:'String',
+		tag:'String',
+		content:'String',
+		createTime:'date'
+  	},
+  	beforeCreate: function(v, cb){
+    		v.createTime = new Date();
+    	return cb();
+  	}
+})
+
+var orm = new Waterline();
+orm.loadCollection(User);
+orm.loadCollection(Note);
+
+var config = {
+	adapters: adapters,
+	connections: connections,
+	port:3000
+}
+
+orm.initialize(config, function(err, models){
+  	if(err) {
+    		console.log('waterline initialize failed, err:', err);
+    	return;
+  	}
+  	console.log('waterline initialize success.');
 
 //创建express实例
 var app = express();
@@ -55,8 +131,8 @@ app.post('/login',function(req,res) {
 	//获取表单每项数据
 	var username = req.body.login_name;
 	      password = req.body.login_password;
-	      
-	User.findOne({username:username},function(err,user) {
+	    
+	models.collections.user.findOne({username:username},function(err,user) {
 		if (err) {
 			console.log(err);
 			return res.redirect('/login_register');
@@ -100,7 +176,7 @@ app.post('/register',function(req,res) {
 //	}
 	
 	//检查用户名是否存在，如果不存在，则保存该记录
-	User.findOne({username:username},function(err,user) {
+	models.collections.user.findOne({username:username},function(err,user) {
 		if (err) {
 			console.log(err);
 			return res.redirect('/login_register');
@@ -116,12 +192,12 @@ app.post('/register',function(req,res) {
 		      md5password = md5.update(password).digest('hex');
 		
 		//新建用户对象用于保存数据
-		var newUser = new User({
+		var newUser = {
 			username:username,
 			password:md5password
-		});
+		};
 		
-		newUser.save(function(err,doc) {
+		models.collections.user.create(newUser,function(err,doc) {
 			if (err) {
 				console.log(err);
 				return res.redirect('/login_register');
@@ -152,14 +228,14 @@ app.get('/post',function(req,res) {
 });
 
 app.post('/post',function(req,res) {
-	var note = new Note({
+	var note = {
 		title:req.body.title,
 		author:req.session.user.username,
 		tag:req.body.label,
 		content:req.body.note
-	});
+	};
 	
-	note.save(function(err,doc) {
+	models.collections.notes.create(note,function(err,doc) {
 		if (err) {
 			console.log(err);
 			return res.redirect('/post');
@@ -174,14 +250,14 @@ app.get('/detail',function(req,res) {
 	
 	var page = req.query.p ? parseInt(req.query.p) : 1;
 	var rows = 6;
-	var notes = Note.find({author:req.session.user.username});
+	var notes = models.collections.notes.find({author:req.session.user.username});
 	notes.skip((page-1)*rows).limit(rows);
 	notes.exec(function(err,list) {
 		if (err) {
 			console.log(err);
 			return res.redirect('/');
 		}
-		Note.find({author:req.session.user.username},function(err,rs) {
+		models.collections.notes.find({author:req.session.user.username},function(err,rs) {
 			if (err) {
 				console.log(err);
 				return res.redirect('/');
@@ -199,7 +275,7 @@ app.get('/detail',function(req,res) {
 	var title = req.query.t ? req.query.t : 0;
 	if (title != 0) {
 	console.log(title);
-	Note.remove({author:req.session.user.username,title:title},function(err) {
+	models.collections.notes.destroy({author:req.session.user.username,title:title},function(err) {
 		if (err) {
 			console.log(err);
 		}
@@ -221,8 +297,9 @@ app.get('/detail',function(req,res) {
 //});
 
 //监听3000端口
-app.listen(3000,function(req,res) {
-	console.log('app is running at port 3000');
+app.listen(config.port, function(){
+   	console.log('Express listening on port:', config.port);
+});
 });
 
 
